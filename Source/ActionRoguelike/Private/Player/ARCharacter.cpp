@@ -1,6 +1,6 @@
 // ActionRoguelike game. Copyright Taukach K. All Rights Reserved.
 
-#include "ARCharacter.h"
+#include "Player/ARCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -40,6 +40,8 @@ void AARCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputCompone
 
     PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
     PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+
+    PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &AARCharacter::PrimaryAttack);
 }
 
 void AARCharacter::MoveForward(float Value)
@@ -60,4 +62,16 @@ void AARCharacter::MoveRight(float Value)
     FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
 
     AddMovementInput(RightVector, Value);
+}
+
+void AARCharacter::PrimaryAttack()
+{
+    FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+
+    FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
+
+    FActorSpawnParameters SpawnParams;
+    SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+    GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
 }

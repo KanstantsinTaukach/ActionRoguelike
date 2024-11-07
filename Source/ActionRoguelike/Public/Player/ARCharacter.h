@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Weapon/ARMagicProjectile.h"
 #include "ARCharacter.generated.h"
 
 class UCameraComponent;
@@ -24,10 +25,16 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
     UPROPERTY(VisibleAnywhere)
     UCameraComponent *CameraComp;
 
+    UPROPERTY(EditAnywhere)
+    TSubclassOf<AARMagicProjectile> ProjectileClass;
+
     virtual void BeginPlay() override;
 
     void MoveForward(float Value);
+
     void MoveRight(float Value);
+
+    void PrimaryAttack();
 
   public:
     virtual void Tick(float DeltaTime) override;
