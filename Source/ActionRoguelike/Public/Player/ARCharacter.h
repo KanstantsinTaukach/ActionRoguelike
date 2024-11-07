@@ -9,6 +9,7 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class UARInteractionComponent;
 
 UCLASS()
 class ACTIONROGUELIKE_API AARCharacter : public ACharacter
@@ -25,6 +26,9 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
     UPROPERTY(VisibleAnywhere)
     UCameraComponent *CameraComp;
 
+    UPROPERTY(VisibleAnywhere)
+    UARInteractionComponent *InteractionComp;
+
     UPROPERTY(EditAnywhere)
     TSubclassOf<AARMagicProjectile> ProjectileClass;
 
@@ -35,6 +39,8 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
     void MoveRight(float Value);
 
     void PrimaryAttack();
+
+    void PrimaryInteract();
 
   public:
     virtual void Tick(float DeltaTime) override;

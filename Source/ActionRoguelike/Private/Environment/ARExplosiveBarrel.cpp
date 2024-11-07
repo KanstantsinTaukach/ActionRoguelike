@@ -10,7 +10,7 @@ AARExplosiveBarrel::AARExplosiveBarrel()
 
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
     StaticMeshComp->SetSimulatePhysics(true);
-    StaticMeshComp->SetupAttachment(RootComponent);
+    RootComponent = StaticMeshComp;
 
 	RadialForceComp = CreateDefaultSubobject<URadialForceComponent>("RadialForceComp");
     RadialForceComp->SetupAttachment(StaticMeshComp);

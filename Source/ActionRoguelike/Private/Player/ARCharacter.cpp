@@ -1,9 +1,10 @@
 // ActionRoguelike game. Copyright Taukach K. All Rights Reserved.
 
 #include "Player/ARCharacter.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/ARInteractionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 AARCharacter::AARCharacter()
 {
@@ -15,6 +16,8 @@ AARCharacter::AARCharacter()
 
     CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComp");
     CameraComp->SetupAttachment(SpringArmComp);
+
+    InteractionComp = CreateDefaultSubobject<UARInteractionComponent>("InteractionComp");
 
     GetCharacterMovement()->bOrientRotationToMovement = true;
 
@@ -42,6 +45,7 @@ void AARCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputCompone
     PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
     PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &AARCharacter::PrimaryAttack);
+    PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &AARCharacter::PrimaryInteract);
 
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 }
@@ -76,4 +80,12 @@ void AARCharacter::PrimaryAttack()
     SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
     GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+}
+
+void AARCharacter::PrimaryInteract()
+{
+    if (InteractionComp)
+    {
+        InteractionComp->PrimaryInteract();
+    }
 }
