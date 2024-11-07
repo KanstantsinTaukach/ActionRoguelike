@@ -1,6 +1,7 @@
 // ActionRoguelike game. Copyright Taukach K. All Rights Reserved.
 
 #include "Environment/ARExplosiveBarrel.h"
+#include "Components/StaticMeshComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
 
 AARExplosiveBarrel::AARExplosiveBarrel()
@@ -8,8 +9,8 @@ AARExplosiveBarrel::AARExplosiveBarrel()
 	PrimaryActorTick.bCanEverTick = false;
 
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
-    StaticMeshComp->SetupAttachment(RootComponent);
     StaticMeshComp->SetSimulatePhysics(true);
+    StaticMeshComp->SetupAttachment(RootComponent);
 
 	RadialForceComp = CreateDefaultSubobject<URadialForceComponent>("RadialForceComp");
     RadialForceComp->SetupAttachment(StaticMeshComp);

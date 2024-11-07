@@ -42,6 +42,8 @@ void AARCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputCompone
     PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
     PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &AARCharacter::PrimaryAttack);
+
+    PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 }
 
 void AARCharacter::MoveForward(float Value)

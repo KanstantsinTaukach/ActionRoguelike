@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "ARExplosiveBarrel.generated.h"
 
+class UStaticMeshComponent;
 class URadialForceComponent;
 
 UCLASS()
