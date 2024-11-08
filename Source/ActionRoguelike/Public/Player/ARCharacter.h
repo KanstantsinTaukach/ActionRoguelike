@@ -10,6 +10,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 class UARInteractionComponent;
+class UAnimMontage;
 
 UCLASS()
 class ACTIONROGUELIKE_API AARCharacter : public ACharacter
@@ -29,8 +30,13 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
     UPROPERTY(VisibleAnywhere)
     UARInteractionComponent *InteractionComp;
 
-    UPROPERTY(EditAnywhere)
+    UPROPERTY(EditAnywhere, Category = "Attack")
     TSubclassOf<AARMagicProjectile> ProjectileClass;
+
+    UPROPERTY(EditAnywhere, Category = "Attack")
+    UAnimMontage *AttackAnim;
+
+    FTimerHandle TimerHandle_PrimaryAttack;
 
     virtual void BeginPlay() override;
 
@@ -39,6 +45,8 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
     void MoveRight(float Value);
 
     void PrimaryAttack();
+
+    void PrimaryAttack_TimeElapsed();
 
     void PrimaryInteract();
 

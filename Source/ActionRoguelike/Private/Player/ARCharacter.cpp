@@ -72,6 +72,15 @@ void AARCharacter::MoveRight(float Value)
 
 void AARCharacter::PrimaryAttack()
 {
+    PlayAnimMontage(AttackAnim);
+
+    GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &AARCharacter::PrimaryAttack_TimeElapsed, 0.2f);
+
+    // GetWorldTimerManager().ClearTimer(TimerHandle_PrimaryAttack);
+}
+
+void AARCharacter::PrimaryAttack_TimeElapsed()
+{
     FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
     FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
