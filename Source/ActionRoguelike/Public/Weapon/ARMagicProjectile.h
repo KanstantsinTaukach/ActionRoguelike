@@ -19,13 +19,13 @@ class ACTIONROGUELIKE_API AARMagicProjectile : public AActor
     AARMagicProjectile();
 
   protected:
-    UPROPERTY(VisibleAnywhere)
+    UPROPERTY(VisibleAnywhere, BlueprintreadOnly)
     USphereComponent *SphereComp;
 
-    UPROPERTY(VisibleAnywhere)
+    UPROPERTY(VisibleAnywhere, BlueprintreadOnly)
     UProjectileMovementComponent *MovementComp;
 
-    UPROPERTY(VisibleAnywhere)
+    UPROPERTY(VisibleAnywhere, BlueprintreadOnly)
     UParticleSystemComponent *EffectComp;
 
     virtual void BeginPlay() override;
