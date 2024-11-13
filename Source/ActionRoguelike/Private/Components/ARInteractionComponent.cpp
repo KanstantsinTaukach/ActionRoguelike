@@ -6,7 +6,7 @@
 
 UARInteractionComponent::UARInteractionComponent()
 {
-    PrimaryComponentTick.bCanEverTick = true;
+    PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UARInteractionComponent::PrimaryInteract()
@@ -22,23 +22,6 @@ void UARInteractionComponent::PrimaryInteract()
     MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 
     FVector End = EyeLocation + (EyeRotation.Vector() * 1000.0f);
-
-    // FHitResult Hit;
-    // bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
-
-    // AActor *HitActor = Hit.GetActor();
-    // if (HitActor)
-    // {
-    //     if (HitActor->Implements<UARGameplayInterface>())
-    //     {
-    //         APawn *MyPawn = Cast<APawn>(MyOwner);
-
-    //         IARGameplayInterface::Execute_Interact(HitActor, MyPawn);
-    //     }
-    // }
-
-    // FColor LineColor = bBlockingHit ? FColor::Green : FColor::Red;
-    // DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
 
     TArray<FHitResult> Hits;
 
@@ -71,15 +54,4 @@ void UARInteractionComponent::PrimaryInteract()
     }
 
     DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
-}
-
-void UARInteractionComponent::BeginPlay()
-{
-    Super::BeginPlay();
-}
-
-void UARInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                            FActorComponentTickFunction *ThisTickFunction)
-{
-    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
