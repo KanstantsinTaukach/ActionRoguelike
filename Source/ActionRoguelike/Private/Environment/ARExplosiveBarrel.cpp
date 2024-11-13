@@ -3,6 +3,9 @@
 #include "Environment/ARExplosiveBarrel.h"
 #include "Components/StaticMeshComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
+#include "DrawDebugHelpers.h"
+
+DEFINE_LOG_CATEGORY_STATIC(ARExplosiveBarrel, All, All);
 
 AARExplosiveBarrel::AARExplosiveBarrel()
 {
@@ -41,6 +44,14 @@ void AARExplosiveBarrel::OnActorHit(UPrimitiveComponent *HitComponent, AActor *O
                                     UPrimitiveComponent *OtherComp, FVector NormalImpulse, const FHitResult &Hit)
 {
     RadialForceComp->FireImpulse();
+
+    UE_LOG(ARExplosiveBarrel, Log, TEXT("OnActorHit in Explosive Barrel"));
+
+    UE_LOG(ARExplosiveBarrel, Warning, TEXT("OtherActor: %s, at game time: %f"), *GetNameSafe(OtherActor),
+           GetWorld()->TimeSeconds);
+
+    FString CombinedString = FString::Printf(TEXT("Hit at location: %s"), *Hit.ImpactPoint.ToString());
+    DrawDebugString(GetWorld(), Hit.ImpactPoint, CombinedString, nullptr, FColor::Green, 2.0f, true);
 }
 
 void AARExplosiveBarrel::BeginPlay()
