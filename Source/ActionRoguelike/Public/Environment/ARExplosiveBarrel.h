@@ -24,5 +24,11 @@ class ACTIONROGUELIKE_API AARExplosiveBarrel : public AActor
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     URadialForceComponent *RadialForceComp;
 
+    virtual void PostInitializeComponents() override;
+
+    UFUNCTION()
+    void OnActorHit(UPrimitiveComponent *HitComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp,
+                    FVector NormalImpulse, const FHitResult &Hit);
+
     virtual void BeginPlay() override;
 };
