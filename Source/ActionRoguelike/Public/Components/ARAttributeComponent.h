@@ -6,6 +6,9 @@
 #include "CoreMinimal.h"
 #include "ARAttributeComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChangedSignature, AActor *, InstigatorActor,
+                                              UARAttributeComponent *, OwningComp, float, NewHealth, float, Delta);
+
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class ACTIONROGUELIKE_API UARAttributeComponent : public UActorComponent
 {
@@ -19,6 +22,9 @@ class ACTIONROGUELIKE_API UARAttributeComponent : public UActorComponent
     float Health;
 
   public:
+    UPROPERTY(BlueprintAssignable)
+    FOnHealthChangedSignature OnHealthChanged;
+
     UFUNCTION(BlueprintCallable, Category = "Attributes")
     bool ApplyHealthChange(float Delta);
 };
