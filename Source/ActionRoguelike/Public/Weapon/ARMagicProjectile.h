@@ -3,37 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "ARProjectileBase.h"
 #include "ARMagicProjectile.generated.h"
 
-class USphereComponent;
-class UProjectileMovementComponent;
-class UParticleSystemComponent;
-
 UCLASS()
-class ACTIONROGUELIKE_API AARMagicProjectile : public AActor
+class ACTIONROGUELIKE_API AARMagicProjectile : public AARProjectileBase // Re-parented form Actor
 {
     GENERATED_BODY()
 
   public:
     AARMagicProjectile();
-
+    
   protected:
-    UPROPERTY(VisibleAnywhere, BlueprintreadOnly)
-    USphereComponent *SphereComp;
-
-    UPROPERTY(VisibleAnywhere, BlueprintreadOnly)
-    UProjectileMovementComponent *MovementComp;
-
-    UPROPERTY(VisibleAnywhere, BlueprintreadOnly)
-    UParticleSystemComponent *EffectComp;
+    UPROPERTY(EditDefaultsOnly, Category = "Damage")
+    float DamageAmount;
 
     UFUNCTION()
     void OnActorOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp,
-                        int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+                        int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);    
 
-    virtual void BeginPlay() override;
-
-  public:
-    virtual void Tick(float DeltaTime) override;
 };

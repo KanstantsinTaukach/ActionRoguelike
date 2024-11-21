@@ -6,10 +6,13 @@
 #include "Components/ARAttributeComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "DrawDebugHelpers.h"
+
+DEFINE_LOG_CATEGORY_STATIC(CharacterLog, All, All);
 
 AARCharacter::AARCharacter()
 {
-    PrimaryActorTick.bCanEverTick = true;
+    PrimaryActorTick.bCanEverTick = false;
 
     SpringArmComp = CreateDefaultSubobject<USpringArmComponent>("SpringArmComp");
     SpringArmComp->bUsePawnControlRotation = true;
@@ -25,16 +28,8 @@ AARCharacter::AARCharacter()
     GetCharacterMovement()->bOrientRotationToMovement = true;
 
     bUseControllerRotationYaw = false;
-}
 
-void AARCharacter::BeginPlay()
-{
-    Super::BeginPlay();
-}
-
-void AARCharacter::Tick(float DeltaTime)
-{
-    Super::Tick(DeltaTime);
+    AttackAnimDelay = 0.2f;
 }
 
 void AARCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
@@ -48,6 +43,9 @@ void AARCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputCompone
     PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
     PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &AARCharacter::PrimaryAttack);
+    PlayerInputComponent->BindAction("SecondaryAttack", IE_Pressed, this, &AARCharacter::BlackHoleAttack);
+    PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &AARCharacter::Dash);
+
     PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &AARCharacter::PrimaryInteract);
 
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
@@ -77,25 +75,78 @@ void AARCharacter::PrimaryAttack()
 {
     PlayAnimMontage(AttackAnim);
 
-    GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &AARCharacter::PrimaryAttack_TimeElapsed, 0.2f);
-
-    // GetWorldTimerManager().ClearTimer(TimerHandle_PrimaryAttack);
+    GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &AARCharacter::PrimaryAttack_TimeElapsed, AttackAnimDelay);
 }
 
 void AARCharacter::PrimaryAttack_TimeElapsed()
-{
-    if (ensure(ProjectileClass))
-    {
-        FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+{    
+    SpawnProjectile(ProjectileClass);
+}
 
-        FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
+void AARCharacter::BlackHoleAttack()
+{
+    PlayAnimMontage(AttackAnim);
+
+    GetWorldTimerManager().SetTimer(TimerHandle_BlackHoleAttack, this, &AARCharacter::BlackHoleAttack_TimeElapsed, AttackAnimDelay);
+}
+
+void AARCharacter::BlackHoleAttack_TimeElapsed()
+{
+    SpawnProjectile(BlackHoleProjectileClass);
+}
+
+void AARCharacter::Dash()
+{
+    PlayAnimMontage(AttackAnim);
+
+    GetWorldTimerManager().SetTimer(TimerHandle_DashAttack, this, &AARCharacter::Dash_TimeElapsed, AttackAnimDelay);
+}
+
+void AARCharacter::Dash_TimeElapsed()
+{
+    SpawnProjectile(DashProjectileClass);
+}
+
+void AARCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
+{
+    if (ensure(ClassToSpawn))
+    {
+        const FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
         FActorSpawnParameters SpawnParams;
         SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
         SpawnParams.Instigator = this;
 
-        GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
-    }    
+        FCollisionShape Shape;
+        Shape.SetSphere(20.0f);
+
+        //Ignore Player
+        FCollisionQueryParams Params;
+        Params.AddIgnoredActor(this);
+
+        FCollisionObjectQueryParams ObjParams;
+        ObjParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+        ObjParams.AddObjectTypesToQuery(ECC_WorldStatic);
+        ObjParams.AddObjectTypesToQuery(ECC_Pawn);
+
+        FVector TraceStart = CameraComp->GetComponentLocation();
+
+        // Endpoint far into the look-at distance (not too far, still adjuxt somewhat towards crosshair on a miss)
+        FVector TraceEnd = CameraComp->GetComponentLocation() + (GetControlRotation().Vector() * 5000.0f);
+
+        FHitResult Hit;
+        // Returns true if we got to a blocking hit
+        if (GetWorld()->SweepSingleByObjectType(Hit, TraceStart, TraceEnd, FQuat::Identity, ObjParams, Shape, Params))
+        {
+            TraceEnd = Hit.ImpactPoint;
+        }
+
+        // Find new direction/rotation from Hand pointing to impact point in world.
+        FRotator ProjRotation = FRotationMatrix::MakeFromX(TraceEnd - HandLocation).Rotator();
+
+        FTransform SpawnTM = FTransform(ProjRotation, HandLocation);
+        GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
+    }
 }
 
 void AARCharacter::PrimaryInteract()

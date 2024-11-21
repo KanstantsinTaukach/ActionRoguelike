@@ -1,27 +1,18 @@
 // ActionRoguelike game. Copyright Taukach K. All Rights Reserved.
 
 #include "Weapon/ARMagicProjectile.h"
-#include "Components/SphereComponent.h"
 #include "Components/ARAttributeComponent.h"
-#include "GameFramework/ProjectileMovementComponent.h"
-#include "Particles/ParticleSystemComponent.h"
+#include "Components/SphereComponent.h"
 
 AARMagicProjectile::AARMagicProjectile()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
-	SphereComp = CreateDefaultSubobject<USphereComponent>("SphereComp");
-    SphereComp->SetCollisionProfileName("Projectile");
-    SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AARMagicProjectile::OnActorOverlap);
-    RootComponent = SphereComp;
+    SphereComp->SetSphereRadius(20.0f);
 
-	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComp");
-    EffectComp->SetupAttachment(SphereComp);
+    SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AARMagicProjectile::OnActorOverlap);  
 
-	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>("MovementComp");
-    MovementComp->InitialSpeed = 1000.0f;
-    MovementComp->bRotationFollowsVelocity = true;
-    MovementComp->bInitialVelocityInLocalSpace = true;
+    DamageAmount = 20.0f;
 }
 
 void AARMagicProjectile::OnActorOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
@@ -33,20 +24,10 @@ void AARMagicProjectile::OnActorOverlap(UPrimitiveComponent *OverlappedComponent
         const auto AttributeComp = Cast <UARAttributeComponent>(OtherActor->GetComponentByClass(UARAttributeComponent::StaticClass()));
         if (AttributeComp)
         {
-            AttributeComp->ApplyHealthChange(-20.0f);
+            AttributeComp->ApplyHealthChange(-DamageAmount);
 
-            Destroy();
+            // Only explode when we hit something valid
+            Explode();
         }
     }
-}
-
-void AARMagicProjectile::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-void AARMagicProjectile::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
 }

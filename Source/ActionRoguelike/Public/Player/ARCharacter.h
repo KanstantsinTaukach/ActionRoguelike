@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Weapon/ARMagicProjectile.h"
+#include "Weapon/ARDashProjectile.h"
 #include "ARCharacter.generated.h"
 
 class UCameraComponent;
@@ -20,6 +21,8 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
 
   public:
     AARCharacter();
+
+    virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
   protected:
     UPROPERTY(VisibleAnywhere)
@@ -38,24 +41,35 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
     TSubclassOf<AARMagicProjectile> ProjectileClass;
 
     UPROPERTY(EditAnywhere, Category = "Attack")
+    TSubclassOf<AActor> BlackHoleProjectileClass;
+
+    UPROPERTY(EditAnywhere, Category = "Attack")
+    TSubclassOf<AARDashProjectile> DashProjectileClass;
+
+    UPROPERTY(EditAnywhere, Category = "Attack")
     UAnimMontage *AttackAnim;
 
-    FTimerHandle TimerHandle_PrimaryAttack;
+    UPROPERTY(EditDefaultsOnly, Category = "Attack")
+    float AttackAnimDelay;
 
-    virtual void BeginPlay() override;
+    FTimerHandle TimerHandle_PrimaryAttack;
+    FTimerHandle TimerHandle_BlackHoleAttack;
+    FTimerHandle TimerHandle_DashAttack;
 
     void MoveForward(float Value);
 
     void MoveRight(float Value);
 
     void PrimaryAttack();
-
     void PrimaryAttack_TimeElapsed();
 
+    void BlackHoleAttack();
+    void BlackHoleAttack_TimeElapsed();
+
+    void Dash();
+    void Dash_TimeElapsed();
+
+    void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
+
     void PrimaryInteract();
-
-  public:
-    virtual void Tick(float DeltaTime) override;
-
-    virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 };
