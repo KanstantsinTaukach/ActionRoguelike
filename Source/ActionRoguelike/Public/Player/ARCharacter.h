@@ -72,4 +72,9 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
     void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
 
     void PrimaryInteract();
+
+    virtual void PostInitializeComponents() override;
+
+    UFUNCTION()
+    void OnHealthChanged(AActor *InstigatorActor, UARAttributeComponent *OwningComp, float NewHealth, float Delta);
 };

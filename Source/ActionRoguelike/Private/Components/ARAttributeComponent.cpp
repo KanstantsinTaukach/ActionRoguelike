@@ -16,3 +16,8 @@ bool UARAttributeComponent::ApplyHealthChange(float Delta)
 
     return true;
 }
+
+bool UARAttributeComponent::IsAlive() const
+{
+    return Health > 0.0f;
+}

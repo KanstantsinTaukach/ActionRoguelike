@@ -27,4 +27,7 @@ class ACTIONROGUELIKE_API UARAttributeComponent : public UActorComponent
 
     UFUNCTION(BlueprintCallable, Category = "Attributes")
     bool ApplyHealthChange(float Delta);
+
+    UFUNCTION(BlueprintCallable)
+    bool IsAlive() const;
 };
