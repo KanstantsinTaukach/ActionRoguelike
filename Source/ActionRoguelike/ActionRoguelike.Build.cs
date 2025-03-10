@@ -20,7 +20,8 @@ public class ActionRoguelike : ModuleRules
             "ActionRoguelike/Public/Interaction",
             "ActionRoguelike/Public/Components",
             "ActionRoguelike/Public/AI",
-            "ActionRoguelike/Public/AI/Services"
+            "ActionRoguelike/Public/AI/Services",
+            "ActionRoguelike/Public/AI/Tasks"
         });
 
         // Uncomment if you are using Slate UI
