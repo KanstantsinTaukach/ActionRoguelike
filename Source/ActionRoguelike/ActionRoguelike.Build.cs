@@ -18,7 +18,8 @@ public class ActionRoguelike : ModuleRules
             "ActionRoguelike/Public/Weapon",
             "ActionRoguelike/Public/Environment",
             "ActionRoguelike/Public/Interaction",
-            "ActionRoguelike/Public/Components"
+            "ActionRoguelike/Public/Components",
+             "ActionRoguelike/Public/AI"
         });
 
         // Uncomment if you are using Slate UI
