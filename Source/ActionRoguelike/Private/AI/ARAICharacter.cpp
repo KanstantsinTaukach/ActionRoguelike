@@ -1,21 +1,32 @@
 // ActionRoguelike game. Copyright Taukach K. All Rights Reserved.
 
 #include "AI/ARAICharacter.h"
+#include "AIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "Perception/PawnSensingComponent.h"
+#include <DrawDebugHelpers.h>
 
 AARAICharacter::AARAICharacter()
 {
-	PrimaryActorTick.bCanEverTick = true;
-
+    PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>("PawnSensingComp");
 }
 
-void AARAICharacter::BeginPlay()
+void AARAICharacter::PostInitializeComponents()
 {
-	Super::BeginPlay();
-	
+    Super::PostInitializeComponents();
+
+    PawnSensingComp->OnSeePawn.AddDynamic(this, &AARAICharacter::OnPawnSeen);
 }
 
-void AARAICharacter::Tick(float DeltaTime)
+void AARAICharacter::OnPawnSeen(APawn *Pawn)
 {
-	Super::Tick(DeltaTime);
+    const auto AIController = Cast<AAIController>(GetController());
+    if (AIController)
+    {
+        const auto BlackboardComponent = AIController->GetBlackboardComponent();
 
+        BlackboardComponent->SetValueAsObject("TargetActor", Pawn);
+
+        DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
+    }
 }
