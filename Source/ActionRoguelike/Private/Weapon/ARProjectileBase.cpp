@@ -6,6 +6,8 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundCue.h"
 
 AARProjectileBase::AARProjectileBase()
 {
@@ -18,6 +20,9 @@ AARProjectileBase::AARProjectileBase()
 
     EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComp");
     EffectComp->SetupAttachment(SphereComp);
+
+    AudioComp = CreateDefaultSubobject<UAudioComponent>("AudioComp");
+    AudioComp->SetupAttachment(SphereComp);
 
     MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComp");
     MovementComp->InitialSpeed = 8000.0f;
@@ -39,7 +44,15 @@ void AARProjectileBase::Explode_Implementation()
     // Adding ensure to see if we encounter this situation at all
     if (ensure(!IsPendingKill()))
     {
-        UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
+        if (ImpactVFX)
+        {
+            UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
+        }
+
+        if (ImpactSound)
+        {
+            UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+        }
 
         Destroy();
     }
