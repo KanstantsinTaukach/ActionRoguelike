@@ -6,18 +6,17 @@ UARAttributeComponent::UARAttributeComponent()
 {
     PrimaryComponentTick.bCanEverTick = false;
 
-    Health = 100.0f;
+    Health = MaxHealth;
 }
+
 bool UARAttributeComponent::ApplyHealthChange(float Delta)
 {
-    Health += Delta;
+    float OldHealth = Health;
+    Health = FMath::Clamp(Health + Delta, 0.0f, MaxHealth);
 
-    OnHealthChanged.Broadcast(nullptr, this, Health, Delta);
+    float ActualDelta = Health - OldHealth;
 
-    return true;
-}
+    OnHealthChanged.Broadcast(nullptr, this, Health, ActualDelta);
 
-bool UARAttributeComponent::IsAlive() const
-{
-    return Health > 0.0f;
+    return ActualDelta != 0;
 }

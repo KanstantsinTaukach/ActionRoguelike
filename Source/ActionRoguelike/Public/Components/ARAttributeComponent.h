@@ -21,6 +21,9 @@ class ACTIONROGUELIKE_API UARAttributeComponent : public UActorComponent
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
     float Health;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
+    float MaxHealth = 100.0f;
+
   public:
     UPROPERTY(BlueprintAssignable)
     FOnHealthChangedSignature OnHealthChanged;
@@ -29,5 +32,11 @@ class ACTIONROGUELIKE_API UARAttributeComponent : public UActorComponent
     bool ApplyHealthChange(float Delta);
 
     UFUNCTION(BlueprintCallable)
-    bool IsAlive() const;
+    bool IsAlive() const { return Health > 0.0f; };
+
+    UFUNCTION(BlueprintCallable)
+    bool IsHealthFull() const { return Health == MaxHealth; };
+
+    UFUNCTION(BlueprintCallable)
+    bool GetMaxHealth() const { return MaxHealth; };
 };
