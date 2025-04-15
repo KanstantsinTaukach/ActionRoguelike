@@ -38,5 +38,5 @@ class ACTIONROGUELIKE_API UARAttributeComponent : public UActorComponent
     bool IsHealthFull() const { return Health == MaxHealth; };
 
     UFUNCTION(BlueprintCallable)
-    bool GetMaxHealth() const { return MaxHealth; };
+    float GetMaxHealth() const { return MaxHealth; };
 };

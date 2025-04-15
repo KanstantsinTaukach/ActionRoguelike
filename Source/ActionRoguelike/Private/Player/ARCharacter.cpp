@@ -30,6 +30,9 @@ AARCharacter::AARCharacter()
     bUseControllerRotationYaw = false;
 
     AttackAnimDelay = 0.2f;
+
+    TimeToHitParamName = "TimeToHit";
+    HandSocketName = "Muzzle_01";
 }
 
 void AARCharacter::PostInitializeComponents()
@@ -118,7 +121,7 @@ void AARCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 {
     if (ensure(ClassToSpawn))
     {
-        const FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+        const FVector HandLocation = GetMesh()->GetSocketLocation(HandSocketName);
 
         FActorSpawnParameters SpawnParams;
         SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -164,9 +167,13 @@ void AARCharacter::PrimaryInteract()
     }
 }
 
-void AARCharacter::OnHealthChanged(AActor *InstigatorActor, UARAttributeComponent *OwningComp, float NewHealth,
-                                   float Delta)
+void AARCharacter::OnHealthChanged(AActor *InstigatorActor, UARAttributeComponent *OwningComp, float NewHealth, float Delta)
 {
+    if (Delta < 0.0f)
+    {
+        GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
+    }
+
     if (NewHealth <= 0.0f && Delta < 0.0f)
     {
         APlayerController* PC = Cast<APlayerController>(GetController());

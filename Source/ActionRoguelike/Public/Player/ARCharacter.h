@@ -52,6 +52,12 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
     UPROPERTY(EditDefaultsOnly, Category = "Attack")
     float AttackAnimDelay;
 
+    UPROPERTY(VisibleAnywhere, Category = "Effects")
+    FName TimeToHitParamName;
+
+    UPROPERTY(VisibleAnywhere, Category = "Effects")
+    FName HandSocketName;
+
     FTimerHandle TimerHandle_PrimaryAttack;
     FTimerHandle TimerHandle_BlackHoleAttack;
     FTimerHandle TimerHandle_DashAttack;

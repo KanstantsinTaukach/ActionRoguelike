@@ -18,5 +18,5 @@ bool UARAttributeComponent::ApplyHealthChange(float Delta)
 
     OnHealthChanged.Broadcast(nullptr, this, Health, ActualDelta);
 
-    return ActualDelta != 0;
+    return ActualDelta != 0.0f;
 }

@@ -9,6 +9,7 @@ AARMagicProjectile::AARMagicProjectile()
 	PrimaryActorTick.bCanEverTick = false;
 
     SphereComp->SetSphereRadius(20.0f);
+    SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
 
     SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AARMagicProjectile::OnActorOverlap);  
 
