@@ -21,7 +21,8 @@ public class ActionRoguelike : ModuleRules
             "ActionRoguelike/Public/Components",
             "ActionRoguelike/Public/AI",
             "ActionRoguelike/Public/AI/Services",
-            "ActionRoguelike/Public/AI/Tasks"
+            "ActionRoguelike/Public/AI/Tasks",
+            "ActionRoguelike/Public/PowerUps"
         });
 
         // Uncomment if you are using Slate UI
