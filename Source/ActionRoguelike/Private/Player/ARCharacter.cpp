@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY_STATIC(CharacterLog, All, All);
 
@@ -83,7 +84,7 @@ void AARCharacter::MoveRight(float Value)
 
 void AARCharacter::PrimaryAttack()
 {
-    PlayAnimMontage(AttackAnim);
+    StartAttackEffects();
 
     GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &AARCharacter::PrimaryAttack_TimeElapsed, AttackAnimDelay);
 }
@@ -95,7 +96,7 @@ void AARCharacter::PrimaryAttack_TimeElapsed()
 
 void AARCharacter::BlackHoleAttack()
 {
-    PlayAnimMontage(AttackAnim);
+    StartAttackEffects();
 
     GetWorldTimerManager().SetTimer(TimerHandle_BlackHoleAttack, this, &AARCharacter::BlackHoleAttack_TimeElapsed, AttackAnimDelay);
 }
@@ -107,7 +108,7 @@ void AARCharacter::BlackHoleAttack_TimeElapsed()
 
 void AARCharacter::Dash()
 {
-    PlayAnimMontage(AttackAnim);
+    StartAttackEffects();
 
     GetWorldTimerManager().SetTimer(TimerHandle_DashAttack, this, &AARCharacter::Dash_TimeElapsed, AttackAnimDelay);
 }
@@ -115,6 +116,16 @@ void AARCharacter::Dash()
 void AARCharacter::Dash_TimeElapsed()
 {
     SpawnProjectile(DashProjectileClass);
+}
+
+void AARCharacter::StartAttackEffects()
+{
+    PlayAnimMontage(AttackAnim);
+
+    if (CastingEffect)
+    {
+        UGameplayStatics::SpawnEmitterAttached(CastingEffect, GetMesh(), HandSocketName, FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
+    }
 }
 
 void AARCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)

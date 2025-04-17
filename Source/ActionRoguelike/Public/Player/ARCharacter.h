@@ -49,6 +49,9 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
     UPROPERTY(EditAnywhere, Category = "Attack")
     UAnimMontage *AttackAnim;
 
+    UPROPERTY(EditAnywhere, Category = "Attack")
+    UParticleSystem *CastingEffect;
+
     UPROPERTY(EditDefaultsOnly, Category = "Attack")
     float AttackAnimDelay;
 
@@ -74,6 +77,8 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
 
     void Dash();
     void Dash_TimeElapsed();
+
+    void StartAttackEffects();
 
     void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
 
