@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/AudioComponent.h"
 #include "Sound/SoundCue.h"
+#include "Camera/CameraShakeBase.h"
 
 AARProjectileBase::AARProjectileBase()
 {
@@ -52,6 +53,11 @@ void AARProjectileBase::Explode_Implementation()
         if (ImpactSound)
         {
             UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+        }
+
+        if (ImpactCameraShake)
+        {
+            UGameplayStatics::PlayWorldCameraShake(this, ImpactCameraShake, GetActorLocation(), ImpactShakeInnerRadius, ImpactShakeOuterRadius);
         }
 
         Destroy();
