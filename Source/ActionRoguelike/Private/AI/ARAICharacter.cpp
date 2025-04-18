@@ -4,11 +4,16 @@
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/PawnSensingComponent.h"
-#include <DrawDebugHelpers.h>
+#include "DrawDebugHelpers.h"
+#include "Components/ARAttributeComponent.h"
 
 AARAICharacter::AARAICharacter()
 {
     PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>("PawnSensingComp");
+
+    AttributeComp = CreateDefaultSubobject<UARAttributeComponent>("AttributeComp");
+
+    AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 void AARAICharacter::PostInitializeComponents()

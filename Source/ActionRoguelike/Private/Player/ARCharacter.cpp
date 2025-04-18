@@ -9,7 +9,7 @@
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 
-DEFINE_LOG_CATEGORY_STATIC(CharacterLog, All, All);
+DEFINE_LOG_CATEGORY_STATIC(ARCharacterLog, All, All);
 
 AARCharacter::AARCharacter()
 {
