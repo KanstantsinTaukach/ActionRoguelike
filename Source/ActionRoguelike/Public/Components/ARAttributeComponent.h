@@ -17,6 +17,9 @@ class ACTIONROGUELIKE_API UARAttributeComponent : public UActorComponent
   public:
     UARAttributeComponent();
 
+    UFUNCTION(BlueprintCallable, Category = " ")
+    static UARAttributeComponent *GetAttributes(AActor *FromActor);
+
   protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
     float Health;

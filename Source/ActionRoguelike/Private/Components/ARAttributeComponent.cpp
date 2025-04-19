@@ -20,3 +20,13 @@ bool UARAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Del
 
     return ActualDelta != 0.0f;
 }
+
+UARAttributeComponent *UARAttributeComponent::GetAttributes(AActor *FromActor)
+{
+    if (FromActor)
+    {
+        return Cast<UARAttributeComponent>(FromActor->GetComponentByClass(UARAttributeComponent::StaticClass()));
+    }
+
+    return nullptr;
+}

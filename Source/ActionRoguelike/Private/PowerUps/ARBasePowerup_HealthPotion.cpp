@@ -14,7 +14,7 @@ void AARBasePowerup_HealthPotion::Interact_Implementation(APawn *InstigatorPawn)
 {
     if (!InstigatorPawn) return;
 
-    const auto AttributeComponent = Cast<UARAttributeComponent>(InstigatorPawn->GetComponentByClass(UARAttributeComponent::StaticClass()));
+    const auto AttributeComponent = UARAttributeComponent::GetAttributes(InstigatorPawn);
 
     if (AttributeComponent && !AttributeComponent->IsHealthFull())
     {

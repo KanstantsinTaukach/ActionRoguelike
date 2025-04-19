@@ -22,7 +22,7 @@ void AARMagicProjectile::OnActorOverlap(UPrimitiveComponent *OverlappedComponent
 {
     if (OtherActor && OtherActor != GetInstigator())
     {
-        const auto AttributeComp = Cast <UARAttributeComponent>(OtherActor->GetComponentByClass(UARAttributeComponent::StaticClass()));
+        const auto AttributeComp = UARAttributeComponent::GetAttributes(OtherActor);
         if (AttributeComp)
         {
             AttributeComp->ApplyHealthChange(GetInstigator(), - DamageAmount);

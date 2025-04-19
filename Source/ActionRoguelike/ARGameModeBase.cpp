@@ -30,7 +30,7 @@ void ARGameModeBase::SpawnBotTimerElapsed()
     {
         const auto Bot = *It;
 
-        const auto AttributeComponent = Cast<UARAttributeComponent>(Bot->GetComponentByClass(UARAttributeComponent::StaticClass()));
+        const auto AttributeComponent = UARAttributeComponent::GetAttributes(Bot);
         if (ensure(AttributeComponent) && AttributeComponent->IsAlive())
         {
             ++NumOfAliveBots;
