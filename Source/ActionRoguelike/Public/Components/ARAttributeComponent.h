@@ -29,7 +29,7 @@ class ACTIONROGUELIKE_API UARAttributeComponent : public UActorComponent
     FOnHealthChangedSignature OnHealthChanged;
 
     UFUNCTION(BlueprintCallable, Category = "Attributes")
-    bool ApplyHealthChange(float Delta);
+    bool ApplyHealthChange(AActor *InstigatorActor, float Delta);
 
     UFUNCTION(BlueprintCallable)
     bool IsAlive() const { return Health > 0.0f; };

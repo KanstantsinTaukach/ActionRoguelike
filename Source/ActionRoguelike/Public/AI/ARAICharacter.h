@@ -31,4 +31,6 @@ class ACTIONROGUELIKE_API AARAICharacter : public ACharacter
     void OnHealthChanged(AActor *InstigatorActor, UARAttributeComponent *OwningComp, float NewHealth, float Delta);
 
     virtual void PostInitializeComponents() override;
+
+    void SetTargetActor(AActor *NewTarget);
 };

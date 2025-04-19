@@ -18,7 +18,7 @@ void AARBasePowerup_HealthPotion::Interact_Implementation(APawn *InstigatorPawn)
 
     if (AttributeComponent && !AttributeComponent->IsHealthFull())
     {
-        if (AttributeComponent->ApplyHealthChange(AttributeComponent->GetMaxHealth()))
+        if (AttributeComponent->ApplyHealthChange(this, AttributeComponent->GetMaxHealth()))
         {
             HideAndCooldownPowerup();
         }

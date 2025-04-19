@@ -26,14 +26,18 @@ void AARAICharacter::PostInitializeComponents()
     AttributeComp->OnHealthChanged.AddDynamic(this, &AARAICharacter::OnHealthChanged);
 }
 
+
 void AARAICharacter::OnPawnSeen(APawn *Pawn)
+{
+    SetTargetActor(Pawn);
+}
+
+void AARAICharacter::SetTargetActor(AActor *NewTarget)
 {
     const auto AIController = Cast<AAIController>(GetController());
     if (AIController)
     {
-        const auto BlackboardComponent = AIController->GetBlackboardComponent();
-
-        BlackboardComponent->SetValueAsObject("TargetActor", Pawn);
+        AIController->GetBlackboardComponent()->SetValueAsObject("TargetActor", NewTarget);
     }
 }
 
@@ -41,6 +45,11 @@ void AARAICharacter::OnHealthChanged(AActor *InstigatorActor, UARAttributeCompon
 {
     if (Delta < 0.0f)
     {
+        if (InstigatorActor != this)
+        {
+            SetTargetActor(InstigatorActor);
+        }
+
         if (NewHealth <= 0.0f)
         {
             // stop BT
