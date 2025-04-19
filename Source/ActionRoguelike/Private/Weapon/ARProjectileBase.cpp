@@ -20,10 +20,10 @@ AARProjectileBase::AARProjectileBase()
     RootComponent = SphereComp;
 
     EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComp");
-    EffectComp->SetupAttachment(SphereComp);
+    EffectComp->SetupAttachment(RootComponent);
 
     AudioComp = CreateDefaultSubobject<UAudioComponent>("AudioComp");
-    AudioComp->SetupAttachment(SphereComp);
+    AudioComp->SetupAttachment(RootComponent);
 
     MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComp");
     MovementComp->InitialSpeed = 8000.0f;

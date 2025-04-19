@@ -7,6 +7,7 @@
 #include "AI/ARAICharacter.h"
 #include "Components/ARAttributeComponent.h"
 #include "EngineUtils.h"
+#include "DrawDebugHelpers.h"
 
 DEFINE_LOG_CATEGORY_STATIC(ARGameModeBaseLog, All, All);
 
@@ -24,8 +25,34 @@ void ARGameModeBase::StartPlay()
 
 void ARGameModeBase::SpawnBotTimerElapsed()
 {
-    const auto QueryInstance = UEnvQueryManager::RunEQSQuery(this, SpawnBotQuery, this, EEnvQueryRunMode::RandomBest5Pct, nullptr);
+    int32 NumOfAliveBots = 0;
+    for (TActorIterator<AARAICharacter> It(GetWorld()); It; ++It)
+    {
+        const auto Bot = *It;
 
+        const auto AttributeComponent = Cast<UARAttributeComponent>(Bot->GetComponentByClass(UARAttributeComponent::StaticClass()));
+        if (ensure(AttributeComponent) && AttributeComponent->IsAlive())
+        {
+            ++NumOfAliveBots;
+        }
+    }
+
+    UE_LOG(ARGameModeBaseLog, Log, TEXT("Found %i alive bots."), NumOfAliveBots);
+
+    float MaxBotCount = 15.0f;
+    if (DifficultyCurve)
+    {
+        MaxBotCount = DifficultyCurve->GetFloatValue(GetWorld()->TimeSeconds);
+    }
+
+    if (NumOfAliveBots >= MaxBotCount)
+    {
+        UE_LOG(ARGameModeBaseLog, Log, TEXT("At maximum bot capacity. Skipping bot spawn."));
+
+        return;
+    }
+
+    const auto QueryInstance = UEnvQueryManager::RunEQSQuery(this, SpawnBotQuery, this, EEnvQueryRunMode::RandomBest5Pct, nullptr);
     if (ensure(QueryInstance))
     {
         QueryInstance->GetOnQueryFinishedEvent().AddDynamic(this, &ARGameModeBase::OnQueryCompleted);
@@ -38,36 +65,14 @@ void ARGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper *QueryIn
     {
         UE_LOG(ARGameModeBaseLog, Warning, TEXT("Spawn bot EQS Query failed!"));
         return;
-    }
-
-    int32 NumOfAliveBots = 0;
-    for (TActorIterator<AARAICharacter> It(GetWorld()); It; ++It)
-    {
-        const auto Bot = *It;
-
-        const auto AttributeComponent = Cast<UARAttributeComponent>(Bot->GetComponentByClass(UARAttributeComponent::StaticClass()));
-        if (AttributeComponent && AttributeComponent->IsAlive())
-        {
-            ++NumOfAliveBots;
-        }
-    }
-
-    float MaxBotCount;
-
-    if (DifficultyCurve)
-    {
-        MaxBotCount = DifficultyCurve->GetFloatValue(GetWorld()->TimeSeconds);
-    }
-
-    if (NumOfAliveBots >= MaxBotCount)
-    {
-        return;
-    }
+    }  
 
     TArray<FVector> Locations = QueryInstance->GetResultsAsLocations();
 
     if (Locations.IsValidIndex(0))
     {
         GetWorld()->SpawnActor<AActor>(MinionClass, Locations[0], FRotator::ZeroRotator);
+
+        DrawDebugSphere(GetWorld(), Locations[0], 50.0f, 16, FColor::Blue, false, 100.0f);
     }
 }

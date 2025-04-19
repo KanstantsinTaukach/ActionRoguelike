@@ -31,7 +31,5 @@ void AARAICharacter::OnPawnSeen(APawn *Pawn)
         const auto BlackboardComponent = AIController->GetBlackboardComponent();
 
         BlackboardComponent->SetValueAsObject("TargetActor", Pawn);
-
-        DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
     }
 }
