@@ -15,6 +15,8 @@ AARAICharacter::AARAICharacter()
     AttributeComp = CreateDefaultSubobject<UARAttributeComponent>("AttributeComp");
 
     AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+    TimeToHitParamName = "TimeToHit";
 }
 
 void AARAICharacter::PostInitializeComponents()
@@ -49,6 +51,8 @@ void AARAICharacter::OnHealthChanged(AActor *InstigatorActor, UARAttributeCompon
         {
             SetTargetActor(InstigatorActor);
         }
+
+        GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
 
         if (NewHealth <= 0.0f)
         {

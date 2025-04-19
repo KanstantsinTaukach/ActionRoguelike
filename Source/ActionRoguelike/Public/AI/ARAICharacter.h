@@ -24,6 +24,9 @@ class ACTIONROGUELIKE_API AARAICharacter : public ACharacter
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UARAttributeComponent *AttributeComp;
 
+    UPROPERTY(VisibleAnywhere, Category = "Effects")
+    FName TimeToHitParamName;
+
     UFUNCTION()
     void OnPawnSeen(APawn *Pawn);
 
