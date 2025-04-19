@@ -20,13 +20,3 @@ void AARItemChest::Interact_Implementation(APawn *InstigatorPawn)
 {
     LidMesh->SetRelativeRotation(FRotator(TargetPitch, 0.0f, 0.0f));
 }
-
-void AARItemChest::BeginPlay()
-{
-    Super::BeginPlay();
-}
-
-void AARItemChest::Tick(float DeltaTime)
-{
-    Super::Tick(DeltaTime);
-}

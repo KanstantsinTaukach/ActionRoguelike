@@ -28,9 +28,4 @@ class ACTIONROGUELIKE_API AARItemChest : public AActor, public IARGameplayInterf
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
     UStaticMeshComponent *LidMesh;
-
-    virtual void BeginPlay() override;
-
-  public:
-    virtual void Tick(float DeltaTime) override;
 };

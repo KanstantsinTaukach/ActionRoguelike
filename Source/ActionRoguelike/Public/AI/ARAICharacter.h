@@ -27,5 +27,8 @@ class ACTIONROGUELIKE_API AARAICharacter : public ACharacter
     UFUNCTION()
     void OnPawnSeen(APawn *Pawn);
 
+    UFUNCTION()
+    void OnHealthChanged(AActor *InstigatorActor, UARAttributeComponent *OwningComp, float NewHealth, float Delta);
+
     virtual void PostInitializeComponents() override;
 };
