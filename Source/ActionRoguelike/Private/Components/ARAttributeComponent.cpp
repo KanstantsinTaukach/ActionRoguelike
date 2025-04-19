@@ -30,3 +30,16 @@ UARAttributeComponent *UARAttributeComponent::GetAttributes(AActor *FromActor)
 
     return nullptr;
 }
+
+bool UARAttributeComponent::IsActorAlive(AActor *Actor)
+{
+    if (!Actor) return false;
+
+    UARAttributeComponent *AttributeComp = GetAttributes(Actor);
+    if (AttributeComp)
+    {
+        return AttributeComp->IsAlive();
+    }
+
+    return false;
+}
