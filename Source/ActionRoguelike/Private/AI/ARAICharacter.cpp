@@ -7,6 +7,8 @@
 #include "DrawDebugHelpers.h"
 #include "Components/ARAttributeComponent.h"
 #include "BrainComponent.h"
+#include "UI/ARWorldUserWidget.h"
+#include "Blueprint/UserWidget.h"
 
 AARAICharacter::AARAICharacter()
 {
@@ -50,6 +52,16 @@ void AARAICharacter::OnHealthChanged(AActor *InstigatorActor, UARAttributeCompon
         if (InstigatorActor != this)
         {
             SetTargetActor(InstigatorActor);
+        }
+
+        if (ActiveHealthBar == nullptr)
+        {
+            ActiveHealthBar = CreateWidget<UARWorldUserWidget>(GetWorld(), HealthBarWidgetClass);
+            if (ActiveHealthBar)
+            {
+                ActiveHealthBar->AttachedActor = this;
+                ActiveHealthBar->AddToViewport();
+            }
         }
 
         GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);

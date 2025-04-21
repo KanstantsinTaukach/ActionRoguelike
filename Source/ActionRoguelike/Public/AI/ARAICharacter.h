@@ -8,6 +8,8 @@
 
 class UPawnSensingComponent;
 class UARAttributeComponent;
+class UARWorldUserWidget;
+class UUserWidget;
 
 UCLASS()
 class ACTIONROGUELIKE_API AARAICharacter : public ACharacter
@@ -26,6 +28,11 @@ class ACTIONROGUELIKE_API AARAICharacter : public ACharacter
 
     UPROPERTY(VisibleAnywhere, Category = "Effects")
     FName TimeToHitParamName;
+
+    UPROPERTY(EditDefaultsOnly, Category = "UI")
+    TSubclassOf<UUserWidget> HealthBarWidgetClass;
+
+    UARWorldUserWidget *ActiveHealthBar;
 
     UFUNCTION()
     void OnPawnSeen(APawn *Pawn);

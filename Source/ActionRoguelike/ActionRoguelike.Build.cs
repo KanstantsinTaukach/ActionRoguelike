@@ -8,7 +8,7 @@ public class ActionRoguelike : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "GameplayTasks" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "GameplayTasks", "UMG" });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });
 
@@ -22,7 +22,8 @@ public class ActionRoguelike : ModuleRules
             "ActionRoguelike/Public/AI",
             "ActionRoguelike/Public/AI/Services",
             "ActionRoguelike/Public/AI/Tasks",
-            "ActionRoguelike/Public/PowerUps"
+            "ActionRoguelike/Public/PowerUps",
+            "ActionRoguelike/Public/UI"
         });
 
         // Uncomment if you are using Slate UI
