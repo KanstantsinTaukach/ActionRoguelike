@@ -45,4 +45,7 @@ class ACTIONROGUELIKE_API UARAttributeComponent : public UActorComponent
 
     UFUNCTION(BlueprintCallable)
     float GetMaxHealth() const { return MaxHealth; };
+
+    UFUNCTION(BlueprintCallable)
+    bool Kill(AActor *InstigatorActor);
 };

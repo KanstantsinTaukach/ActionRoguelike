@@ -24,6 +24,9 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
 
     virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
+    UFUNCTION(Exec)
+    void HealSelf(float Amount = 100.0f);
+
   protected:
     UPROPERTY(VisibleAnywhere)
     USpringArmComponent *SpringArmComp;

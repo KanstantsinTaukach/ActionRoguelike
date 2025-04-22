@@ -76,3 +76,17 @@ void ARGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper *QueryIn
         DrawDebugSphere(GetWorld(), Locations[0], 50.0f, 16, FColor::Blue, false, 100.0f);
     }
 }
+
+void ARGameModeBase::KillAll()
+{
+    for (TActorIterator<AARAICharacter> It(GetWorld()); It; ++It)
+    {
+        const auto Bot = *It;
+
+        const auto AttributeComponent = UARAttributeComponent::GetAttributes(Bot);
+        if (ensure(AttributeComponent) && AttributeComponent->IsAlive())
+        {
+            AttributeComponent->Kill(this);
+        }
+    }
+}

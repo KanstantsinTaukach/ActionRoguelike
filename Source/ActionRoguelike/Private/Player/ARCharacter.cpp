@@ -191,3 +191,8 @@ void AARCharacter::OnHealthChanged(AActor *InstigatorActor, UARAttributeComponen
         DisableInput(PC);
     }
 }
+
+void AARCharacter::HealSelf(float Amount /* = 100.0f */)
+{
+    AttributeComp->ApplyHealthChange(this, Amount);
+}
