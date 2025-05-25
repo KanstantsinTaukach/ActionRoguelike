@@ -46,8 +46,6 @@ class ACTIONROGUELIKE_API AARProjectileBase : public AActor
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UAudioComponent *AudioComp;
 
-
-
     UFUNCTION()
     virtual void OnActorHit(UPrimitiveComponent *HitComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp,
                             FVector NormalImpulse, const FHitResult &Hit);

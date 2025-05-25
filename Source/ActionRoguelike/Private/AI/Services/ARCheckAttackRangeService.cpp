@@ -4,6 +4,11 @@
 #include "BehaviorTree//BlackboardComponent.h"
 #include "AIController.h"
 
+UARCheckAttackRangeService::UARCheckAttackRangeService()
+{
+    MaxAttackRange = 2000.0f;
+}
+
 void UARCheckAttackRangeService::TickNode(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory, float DeltaSeconds)
 {
     Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
@@ -22,7 +27,7 @@ void UARCheckAttackRangeService::TickNode(UBehaviorTreeComponent &OwnerComp, uin
             {
                 float DistanceTo = FVector::Distance(TargetActor->GetActorLocation(), AIPawn->GetActorLocation());
 
-                bool bWithinRange = DistanceTo < 2000.0f;
+                bool bWithinRange = DistanceTo < MaxAttackRange;
 
                 bool bHasLOS = false;
                 if (bWithinRange)
