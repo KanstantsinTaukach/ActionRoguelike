@@ -12,17 +12,19 @@ class UEnvQueryInstanceBlueprintWrapper;
 class UCurveFloat;
 
 UCLASS()
-class ACTIONROGUELIKE_API ARGameModeBase : public AGameModeBase
+class ACTIONROGUELIKE_API AARGameModeBase : public AGameModeBase
 {
     GENERATED_BODY()
 
   public:
-    ARGameModeBase();
+    AARGameModeBase();
 
     virtual void StartPlay() override;
 
     UFUNCTION(Exec)
     void KillAll();
+
+    virtual void OnActorKilled(AActor *VictimActor, AActor *Killer);
 
   protected:
     FTimerHandle SpawnBotsTimerHandle;
@@ -44,4 +46,7 @@ class ACTIONROGUELIKE_API ARGameModeBase : public AGameModeBase
 
     UFUNCTION()
     void OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper *QueryInstance, EEnvQueryStatus::Type QueryStatus);
+
+    UFUNCTION()
+    void RespawnPlayerElapsed(AController *Controller);
 };

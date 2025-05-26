@@ -1,6 +1,7 @@
 // ActionRoguelike game. Copyright Taukach K. All Rights Reserved.
 
 #include "Components/ARAttributeComponent.h"
+#include "../ARGameModeBase.h"
 
 UARAttributeComponent::UARAttributeComponent()
 {
@@ -9,7 +10,7 @@ UARAttributeComponent::UARAttributeComponent()
     Health = MaxHealth;
 }
 
-bool UARAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delta)
+bool UARAttributeComponent::ApplyHealthChange(AActor *InstigatorActor, float Delta)
 {
     if (!GetOwner()->CanBeDamaged())
     {
@@ -23,6 +24,14 @@ bool UARAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Del
 
     OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
 
+    if (ActualDelta < 0.0f && Health == 0.0f)
+    {
+        const auto GameMode = GetWorld()->GetAuthGameMode<AARGameModeBase>();
+        if (GameMode)
+        {
+            GameMode->OnActorKilled(GetOwner(), InstigatorActor);
+        }
+    }
     return ActualDelta != 0.0f;
 }
 
