@@ -4,6 +4,8 @@
 #include "DrawDebugHelpers.h"
 #include "Interaction/ARGameplayInterface.h"
 
+static TAutoConsoleVariable<bool> CVarDebugDrawInteraction(TEXT("ar.InteractionDebugDraw"), false, TEXT("Enable Debug Lines for Interact Component."), ECVF_Cheat);
+
 UARInteractionComponent::UARInteractionComponent()
 {
     PrimaryComponentTick.bCanEverTick = false;
@@ -11,6 +13,8 @@ UARInteractionComponent::UARInteractionComponent()
 
 void UARInteractionComponent::PrimaryInteract()
 {
+    bool bDebugDraw = CVarDebugDrawInteraction.GetValueOnGameThread();
+
     FCollisionObjectQueryParams ObjectQueryParams;
     ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
 
@@ -37,6 +41,11 @@ void UARInteractionComponent::PrimaryInteract()
 
     for (FHitResult Hit : Hits)
     {
+        if (bDebugDraw)
+        {
+            DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 3.0f);
+        }
+
         AActor *HitActor = Hit.GetActor();
         if (HitActor)
         {
@@ -45,13 +54,13 @@ void UARInteractionComponent::PrimaryInteract()
                 APawn *MyPawn = Cast<APawn>(MyOwner);
 
                 IARGameplayInterface::Execute_Interact(HitActor, MyPawn);
-
-                DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 3.0f);
-
                 break;
             }
         }
     }
 
-    DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
+    if (bDebugDraw)
+    {
+        DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
+    }
 }

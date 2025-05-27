@@ -3,6 +3,10 @@
 #include "Components/ARAttributeComponent.h"
 #include "../ARGameModeBase.h"
 
+DEFINE_LOG_CATEGORY_STATIC(ARAttributeComponent, All, All);
+
+static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("ar.DamageMultiplier"), 1.0f, TEXT("Global Damage Modidier for Attribute Component."), ECVF_Cheat);
+
 UARAttributeComponent::UARAttributeComponent()
 {
     PrimaryComponentTick.bCanEverTick = false;
@@ -15,6 +19,17 @@ bool UARAttributeComponent::ApplyHealthChange(AActor *InstigatorActor, float Del
     if (!GetOwner()->CanBeDamaged())
     {
         return false;
+    }
+
+    if (Delta < 0.0f)
+    {
+        float DamageMultiplier = CVarDamageMultiplier.GetValueOnGameThread();
+        Delta *= DamageMultiplier;
+
+        if (DamageMultiplier != 1.0f)
+        {
+            UE_LOG(ARAttributeComponent, Log, TEXT("Damage multiplying via cvar 'CVarDamageMultiplier'."));
+        }
     }
 
     float OldHealth = Health;

@@ -12,6 +12,8 @@
 
 DEFINE_LOG_CATEGORY_STATIC(ARGameModeBaseLog, All, All);
 
+static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("ar.SpawnBots"), true, TEXT("Enable spawning of bots via timer."), ECVF_Cheat);
+
 AARGameModeBase::AARGameModeBase()
 {
     SpawnTimerInterval = 2.0f;
@@ -26,6 +28,12 @@ void AARGameModeBase::StartPlay()
 
 void AARGameModeBase::SpawnBotTimerElapsed()
 {
+    if (!CVarSpawnBots.GetValueOnGameThread())
+    {
+        UE_LOG(ARGameModeBaseLog, Warning, TEXT("Bot spawning disbled via cvar 'CVarSpawnBots'."));
+        return;
+    }
+
     int32 NumOfAliveBots = 0;
     for (TActorIterator<AARAICharacter> It(GetWorld()); It; ++It)
     {
