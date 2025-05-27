@@ -89,6 +89,8 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
 
     virtual void PostInitializeComponents() override;
 
+    virtual FVector GetPawnViewLocation() const override;
+
     UFUNCTION()
     void OnHealthChanged(AActor *InstigatorActor, UARAttributeComponent *OwningComp, float NewHealth, float Delta);
 };

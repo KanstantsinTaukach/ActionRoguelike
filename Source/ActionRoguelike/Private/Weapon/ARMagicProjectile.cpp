@@ -3,6 +3,7 @@
 #include "Weapon/ARMagicProjectile.h"
 #include "Components/ARAttributeComponent.h"
 #include "Components/SphereComponent.h"
+#include "Library/ARGameplayFunctionLibrary.h"
 
 AARMagicProjectile::AARMagicProjectile()
 {
@@ -22,12 +23,17 @@ void AARMagicProjectile::OnActorOverlap(UPrimitiveComponent *OverlappedComponent
 {
     if (OtherActor && OtherActor != GetInstigator())
     {
-        const auto AttributeComp = UARAttributeComponent::GetAttributes(OtherActor);
-        if (AttributeComp)
-        {
-            AttributeComp->ApplyHealthChange(GetInstigator(), - DamageAmount);
+        //const auto AttributeComp = UARAttributeComponent::GetAttributes(OtherActor);
+        //if (AttributeComp)
+        //{
+        //    AttributeComp->ApplyHealthChange(GetInstigator(), - DamageAmount);
 
-            // Only explode when we hit something valid
+        //    // Only explode when we hit something valid
+        //    Explode();
+        //}
+
+        if (UARGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, SweepResult))
+        {
             Explode();
         }
     }

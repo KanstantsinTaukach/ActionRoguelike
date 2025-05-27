@@ -43,6 +43,11 @@ void AARCharacter::PostInitializeComponents()
     AttributeComp->OnHealthChanged.AddDynamic(this, &AARCharacter::OnHealthChanged);
 }
 
+FVector AARCharacter::GetPawnViewLocation() const
+{
+    return CameraComp->GetComponentLocation();
+}
+
 void AARCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);

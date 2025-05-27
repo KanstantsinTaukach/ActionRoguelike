@@ -16,7 +16,7 @@ UARAttributeComponent::UARAttributeComponent()
 
 bool UARAttributeComponent::ApplyHealthChange(AActor *InstigatorActor, float Delta)
 {
-    if (!GetOwner()->CanBeDamaged())
+    if (!GetOwner()->CanBeDamaged() && Delta < 0.0f)
     {
         return false;
     }
