@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/ARInteractionComponent.h"
 #include "Components/ARAttributeComponent.h"
+#include "Components/ARActionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "DrawDebugHelpers.h"
@@ -25,6 +26,8 @@ AARCharacter::AARCharacter()
     InteractionComp = CreateDefaultSubobject<UARInteractionComponent>("InteractionComp");
 
     AttributeComp = CreateDefaultSubobject<UARAttributeComponent>("AttributeComp");
+
+    ActionComp = CreateDefaultSubobject<UARActionComponent>("ActionComp");
 
     GetCharacterMovement()->bOrientRotationToMovement = true;
 
@@ -65,6 +68,9 @@ void AARCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputCompone
     PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &AARCharacter::PrimaryInteract);
 
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+
+    PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AARCharacter::SprintStart);
+    PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AARCharacter::SprintStop);
 }
 
 void AARCharacter::MoveForward(float Value)
@@ -85,6 +91,16 @@ void AARCharacter::MoveRight(float Value)
     FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
 
     AddMovementInput(RightVector, Value);
+}
+
+void AARCharacter::SprintStart()
+{
+    ActionComp->StartActionByName(this, "Sprint");
+}
+
+void AARCharacter::SprintStop()
+{
+    ActionComp->StopActionByName(this, "Sprint");
 }
 
 void AARCharacter::PrimaryAttack()

@@ -23,15 +23,6 @@ void AARMagicProjectile::OnActorOverlap(UPrimitiveComponent *OverlappedComponent
 {
     if (OtherActor && OtherActor != GetInstigator())
     {
-        //const auto AttributeComp = UARAttributeComponent::GetAttributes(OtherActor);
-        //if (AttributeComp)
-        //{
-        //    AttributeComp->ApplyHealthChange(GetInstigator(), - DamageAmount);
-
-        //    // Only explode when we hit something valid
-        //    Explode();
-        //}
-
         if (UARGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, SweepResult))
         {
             Explode();

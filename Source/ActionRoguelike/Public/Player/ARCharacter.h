@@ -13,6 +13,7 @@ class USpringArmComponent;
 class UARInteractionComponent;
 class UAnimMontage;
 class UARAttributeComponent;
+class UARActionComponent;
 
 UCLASS()
 class ACTIONROGUELIKE_API AARCharacter : public ACharacter
@@ -39,6 +40,9 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UARAttributeComponent *AttributeComp;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    UARActionComponent *ActionComp;
 
     UPROPERTY(EditAnywhere, Category = "Attack")
     TSubclassOf<AARMagicProjectile> ProjectileClass;
@@ -69,8 +73,10 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
     FTimerHandle TimerHandle_DashAttack;
 
     void MoveForward(float Value);
-
     void MoveRight(float Value);
+
+    void SprintStart();
+    void SprintStop();
 
     void PrimaryAttack();
     void PrimaryAttack_TimeElapsed();
