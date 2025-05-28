@@ -4,6 +4,7 @@
 
 #include "Components/ActorComponent.h"
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "ARActionComponent.generated.h"
 
 class UARAction;
@@ -16,6 +17,9 @@ class ACTIONROGUELIKE_API UARActionComponent : public UActorComponent
 public:
     UARActionComponent();
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tags")
+    FGameplayTagContainer ActiveGameplayTags;
+
     UFUNCTION(BlueprintCallable, Category = "Actions")
     void AddAction(TSubclassOf<UARAction> ActionClass);
 
@@ -24,6 +28,8 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Actions")
     bool StopActionByName(AActor* Instigator, FName ActionName);
+
+    void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFuncion) override;
 
 protected:
     UPROPERTY(EditAnywhere, Category = "Actions")

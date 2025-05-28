@@ -6,7 +6,7 @@
 
 UARActionComponent::UARActionComponent()
 {
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 }
 
 void UARActionComponent::BeginPlay()
@@ -56,4 +56,12 @@ bool UARActionComponent::StopActionByName(AActor *Instigator, FName ActionName)
     }
 
     return false;
+}
+
+void UARActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFuncion) 
+{
+    Super::TickComponent(DeltaTime, TickType, ThisTickFuncion);
+
+    FString DebugMsg = GetNameSafe(GetOwner()) + " : " + ActiveGameplayTags.ToStringSimple();
+    GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Green, DebugMsg);
 }
