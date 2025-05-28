@@ -13,21 +13,24 @@ class ACTIONROGUELIKE_API UARActionComponent : public UActorComponent
 {
     GENERATED_BODY()
 
-  public:
+public:
     UARActionComponent();
 
     UFUNCTION(BlueprintCallable, Category = "Actions")
     void AddAction(TSubclassOf<UARAction> ActionClass);
 
     UFUNCTION(BlueprintCallable, Category = "Actions")
-    bool StartActionByName(AActor *Instigator, FName ActionName);
+    bool StartActionByName(AActor* Instigator, FName ActionName);
 
     UFUNCTION(BlueprintCallable, Category = "Actions")
-    bool StopActionByName(AActor *Instigator, FName ActionName);
+    bool StopActionByName(AActor* Instigator, FName ActionName);
 
-  protected:
+protected:
+    UPROPERTY(EditAnywhere, Category = "Actions")
+    TArray<TSubclassOf<UARAction>> DefaultActions;
+
     UPROPERTY()
-    TArray<UARAction *> Actions;
+    TArray<UARAction*> Actions;
 
     virtual void BeginPlay() override;
 };

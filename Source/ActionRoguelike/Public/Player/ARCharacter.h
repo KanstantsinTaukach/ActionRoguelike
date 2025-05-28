@@ -44,33 +44,8 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UARActionComponent *ActionComp;
 
-    UPROPERTY(EditAnywhere, Category = "Attack")
-    TSubclassOf<AARMagicProjectile> ProjectileClass;
-
-    UPROPERTY(EditAnywhere, Category = "Attack")
-    TSubclassOf<AActor> BlackHoleProjectileClass;
-
-    UPROPERTY(EditAnywhere, Category = "Attack")
-    TSubclassOf<AARDashProjectile> DashProjectileClass;
-
-    UPROPERTY(EditAnywhere, Category = "Attack")
-    UAnimMontage *AttackAnim;
-
-    UPROPERTY(EditAnywhere, Category = "Attack")
-    UParticleSystem *CastingEffect;
-
-    UPROPERTY(EditDefaultsOnly, Category = "Attack")
-    float AttackAnimDelay;
-
     UPROPERTY(VisibleAnywhere, Category = "Effects")
     FName TimeToHitParamName;
-
-    UPROPERTY(VisibleAnywhere, Category = "Effects")
-    FName HandSocketName;
-
-    FTimerHandle TimerHandle_PrimaryAttack;
-    FTimerHandle TimerHandle_BlackHoleAttack;
-    FTimerHandle TimerHandle_DashAttack;
 
     void MoveForward(float Value);
     void MoveRight(float Value);
@@ -79,18 +54,9 @@ class ACTIONROGUELIKE_API AARCharacter : public ACharacter
     void SprintStop();
 
     void PrimaryAttack();
-    void PrimaryAttack_TimeElapsed();
-
     void BlackHoleAttack();
-    void BlackHoleAttack_TimeElapsed();
-
     void Dash();
-    void Dash_TimeElapsed();
-
-    void StartAttackEffects();
-
-    void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
-
+    
     void PrimaryInteract();
 
     virtual void PostInitializeComponents() override;

@@ -2,7 +2,7 @@
 
 
 #include "Components/ARActionComponent.h"
-#include "Player/ARAction.h"
+#include "Actions/ARAction.h"
 
 UARActionComponent::UARActionComponent()
 {
@@ -11,7 +11,12 @@ UARActionComponent::UARActionComponent()
 
 void UARActionComponent::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();
+
+    for (TSubclassOf<UARAction> ActionClass : DefaultActions)
+    {
+        AddAction(ActionClass);
+    }
 }
 
 void UARActionComponent::AddAction(TSubclassOf<UARAction> ActionClass)

@@ -6,6 +6,8 @@
 #include "UObject/NoExportTypes.h"
 #include "ARAction.generated.h"
 
+class UWorld;
+
 UCLASS(Blueprintable)
 class ACTIONROGUELIKE_API UARAction : public UObject
 {
@@ -20,4 +22,6 @@ class ACTIONROGUELIKE_API UARAction : public UObject
 
     UFUNCTION(BlueprintNativeEvent, Category = "Action")
     void StopAction(AActor *Instigator);
+
+    UWorld* GetWorld() const override;
 };
