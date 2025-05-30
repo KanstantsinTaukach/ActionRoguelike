@@ -8,6 +8,7 @@
 
 class UPawnSensingComponent;
 class UARAttributeComponent;
+class UARActionComponent;
 class UARWorldUserWidget;
 class UUserWidget;
 
@@ -16,15 +17,18 @@ class ACTIONROGUELIKE_API AARAICharacter : public ACharacter
 {
     GENERATED_BODY()
 
-  public:
+public:
     AARAICharacter();
 
-  protected:
+protected:
     UPROPERTY(VisibleAnywhere, Category = "Components")
-    UPawnSensingComponent *PawnSensingComp;
+    UPawnSensingComponent* PawnSensingComp;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-    UARAttributeComponent *AttributeComp;
+    UARAttributeComponent* AttributeComp;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    UARActionComponent* ActionComp;
 
     UPROPERTY(VisibleAnywhere, Category = "Effects")
     FName TimeToHitParamName;
@@ -32,15 +36,15 @@ class ACTIONROGUELIKE_API AARAICharacter : public ACharacter
     UPROPERTY(EditDefaultsOnly, Category = "UI")
     TSubclassOf<UUserWidget> HealthBarWidgetClass;
 
-    UARWorldUserWidget *ActiveHealthBar;
+    UARWorldUserWidget* ActiveHealthBar;
 
     UFUNCTION()
-    void OnPawnSeen(APawn *Pawn);
+    void OnPawnSeen(APawn* Pawn);
 
     UFUNCTION()
-    void OnHealthChanged(AActor *InstigatorActor, UARAttributeComponent *OwningComp, float NewHealth, float Delta);
+    void OnHealthChanged(AActor* InstigatorActor, UARAttributeComponent* OwningComp, float NewHealth, float Delta);
 
     virtual void PostInitializeComponents() override;
 
-    void SetTargetActor(AActor *NewTarget);
+    void SetTargetActor(AActor* NewTarget);
 };

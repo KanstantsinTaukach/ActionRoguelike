@@ -6,6 +6,7 @@
 #include "Perception/PawnSensingComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Components/ARAttributeComponent.h"
+#include "Components/ARActionComponent.h"
 #include "BrainComponent.h"
 #include "UI/ARWorldUserWidget.h"
 #include "Blueprint/UserWidget.h"
@@ -17,6 +18,8 @@ AARAICharacter::AARAICharacter()
     PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>("PawnSensingComp");
 
     AttributeComp = CreateDefaultSubobject<UARAttributeComponent>("AttributeComp");
+
+    ActionComp = CreateDefaultSubobject<UARActionComponent>("ActionComp");
 
     AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 

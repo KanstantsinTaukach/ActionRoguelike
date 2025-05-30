@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "ARProjectileBase.h"
+#include "GameplayTagContainer.h"
 #include "ARMagicProjectile.generated.h"
 
 UCLASS()
-class ACTIONROGUELIKE_API AARMagicProjectile : public AARProjectileBase // Re-parented form Actor
+class ACTIONROGUELIKE_API AARMagicProjectile : public AARProjectileBase 
 {
     GENERATED_BODY()
 
@@ -17,6 +18,9 @@ class ACTIONROGUELIKE_API AARMagicProjectile : public AARProjectileBase // Re-pa
   protected:
     UPROPERTY(EditDefaultsOnly, Category = "Damage")
     float DamageAmount;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Damage")
+    FGameplayTag ParryTag;
 
     UFUNCTION()
     void OnActorOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp,

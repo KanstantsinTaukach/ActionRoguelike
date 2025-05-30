@@ -67,5 +67,4 @@ void AARProjectileBase::Explode_Implementation()
 void AARProjectileBase::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
-    // SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
 }
