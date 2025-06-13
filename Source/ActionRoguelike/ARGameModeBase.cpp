@@ -9,6 +9,7 @@
 #include "EngineUtils.h"
 #include "DrawDebugHelpers.h"
 #include "Player/ARCharacter.h"
+#include "Player/ARPlayerState.h"
 
 DEFINE_LOG_CATEGORY_STATIC(ARGameModeBaseLog, All, All);
 
@@ -16,6 +17,8 @@ static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("ar.SpawnBots"), true, TEXT
 
 AARGameModeBase::AARGameModeBase()
 {
+    PlayerStateClass = AARPlayerState::StaticClass();
+
     SpawnTimerInterval = 2.0f;
 }
 
