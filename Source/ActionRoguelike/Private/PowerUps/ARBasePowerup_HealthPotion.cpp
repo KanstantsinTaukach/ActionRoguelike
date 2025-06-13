@@ -2,12 +2,11 @@
 
 #include "PowerUps/ARBasePowerup_HealthPotion.h"
 #include "ARAttributeComponent.h"
+#include "Player/ARPlayerState.h"
 
 AARBasePowerup_HealthPotion::AARBasePowerup_HealthPotion()
 {
-    MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("MeshComponent");
-    MeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    MeshComponent->SetupAttachment(RootComponent);
+    CreditCost = 50;
 }
 
 void AARBasePowerup_HealthPotion::Interact_Implementation(APawn *InstigatorPawn)
@@ -18,9 +17,12 @@ void AARBasePowerup_HealthPotion::Interact_Implementation(APawn *InstigatorPawn)
 
     if (AttributeComponent && !AttributeComponent->IsHealthFull())
     {
-        if (AttributeComponent->ApplyHealthChange(this, AttributeComponent->GetMaxHealth()))
+        if(const auto PS = InstigatorPawn->GetPlayerState<AARPlayerState>())
         {
-            HideAndCooldownPowerup();
+            if (PS->RemoveCredits(CreditCost) && AttributeComponent->ApplyHealthChange(this, AttributeComponent->GetMaxHealth()))
+            {
+                HideAndCooldownPowerup();
+            }
         }
     }
 }

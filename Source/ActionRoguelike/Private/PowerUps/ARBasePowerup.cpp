@@ -2,6 +2,7 @@
 
 #include "PowerUps/ARBasePowerup.h"
 #include "Components/SphereComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 AARBasePowerup::AARBasePowerup()
 {
@@ -10,6 +11,10 @@ AARBasePowerup::AARBasePowerup()
     CollisionComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
     CollisionComponent->SetCollisionProfileName("Powerup");
     RootComponent = CollisionComponent;
+
+    MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("MeshComponent");
+    MeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    MeshComponent->SetupAttachment(RootComponent);
 }
 
 void AARBasePowerup::BeginPlay()

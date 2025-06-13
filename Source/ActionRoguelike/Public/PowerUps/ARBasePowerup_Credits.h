@@ -4,19 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "PowerUps/ARBasePowerup.h"
-#include "ARBasePowerup_HealthPotion.generated.h"
+#include "ARBasePowerup_Credits.generated.h"
 
 UCLASS()
-class ACTIONROGUELIKE_API AARBasePowerup_HealthPotion : public AARBasePowerup
+class ACTIONROGUELIKE_API AARBasePowerup_Credits : public AARBasePowerup
 {
     GENERATED_BODY()
 
 public:
-    AARBasePowerup_HealthPotion();
+    AARBasePowerup_Credits();
 
     void Interact_Implementation(APawn* InstigatorPawn) override;
 
 protected:
-    UPROPERTY(EditAnywhere, Category = "HealthPotion")
-    int32 CreditCost;
+    UPROPERTY(EditAnywhere, Category = "Credits")
+    int32 CreditsAmount;
 };

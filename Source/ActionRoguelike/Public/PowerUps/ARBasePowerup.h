@@ -8,8 +8,9 @@
 #include "ARBasePowerup.generated.h"
 
 class USphereComponent;
+class UStaticMeshComponent;
 
-UCLASS()
+UCLASS(ABSTRACT)
 class ACTIONROGUELIKE_API AARBasePowerup : public AActor, public IARGameplayInterface
 {
     GENERATED_BODY()
@@ -24,6 +25,9 @@ class ACTIONROGUELIKE_API AARBasePowerup : public AActor, public IARGameplayInte
 
     UPROPERTY(VisibleAnywhere, Category = "Components")
     USphereComponent *CollisionComponent;
+
+    UPROPERTY(VisibleAnywhere, Category = "Components")
+    UStaticMeshComponent* MeshComponent;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Powerup")
     float RespawnTime = 10.0f;
