@@ -30,6 +30,10 @@ protected:
     bool bIsRunning;
 
 public:
+    // Start immediately when added to an action component
+    UPROPERTY(EditDefaultsOnly, Category = "Action")
+    bool bAutoStart;
+
     UPROPERTY(EditDefaultsOnly, Category = "Action")
     FName ActionName;
 

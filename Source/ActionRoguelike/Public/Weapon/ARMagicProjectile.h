@@ -7,6 +7,8 @@
 #include "GameplayTagContainer.h"
 #include "ARMagicProjectile.generated.h"
 
+class UARAction_Effect;
+
 UCLASS()
 class ACTIONROGUELIKE_API AARMagicProjectile : public AARProjectileBase 
 {
@@ -21,6 +23,9 @@ class ACTIONROGUELIKE_API AARMagicProjectile : public AARProjectileBase
 
     UPROPERTY(EditDefaultsOnly, Category = "Damage")
     FGameplayTag ParryTag;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Damage")
+    TSubclassOf<UARAction_Effect> BurningActionClass;
 
     UFUNCTION()
     void OnActorOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp,

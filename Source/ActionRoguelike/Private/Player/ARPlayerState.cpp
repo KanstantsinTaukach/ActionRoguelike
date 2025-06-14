@@ -14,8 +14,6 @@ void AARPlayerState::AddCredits(int32 Delta)
     Credits += Delta;
 
     OnCreditsChanged.Broadcast(this, Credits, Delta);
-
-    UE_LOG(ARPlayerStateLog, Warning, TEXT("Add credits"));
 }
 
 bool AARPlayerState::RemoveCredits(int32 Delta)
@@ -33,8 +31,6 @@ bool AARPlayerState::RemoveCredits(int32 Delta)
     Credits -= Delta;
 
     OnCreditsChanged.Broadcast(this, Credits, Delta);
-
-    UE_LOG(ARPlayerStateLog, Warning, TEXT("Remove credits"));
 
     return true;
 }

@@ -122,14 +122,11 @@ void AARGameModeBase::OnPowerupSpawnQueryCompleted(UEnvQueryInstanceBlueprintWra
 
     int32 SpawnCounter = 0;
 
-    // Break out if we reached the desired count or if we have no more potential positions remaining
     while(SpawnCounter < DesiredPowerupCount && Locations.Num() > 0)
     {
-        // Pick a random location from remaining points
         int32 RandomLocationIndex = FMath::RandRange(0, Locations.Num() - 1);
-
         FVector PickedLocation = Locations[RandomLocationIndex];
-        // Remove to avoid picking again
+
         Locations.RemoveAt(RandomLocationIndex);
 
         // Check minimum distance requerement
@@ -140,8 +137,7 @@ void AARGameModeBase::OnPowerupSpawnQueryCompleted(UEnvQueryInstanceBlueprintWra
 
             if(DistanceTo < RequiredPowerupDistance)
             {
-                // Show skipped locations due to distance
-                if(GetWorld()) DrawDebugSphere(GetWorld(), PickedLocation, 50.0f, 20, FColor::Red, false, 10.0f);
+                //if(GetWorld()) DrawDebugSphere(GetWorld(), PickedLocation, 50.0f, 20, FColor::Red, false, 10.0f);
 
                 // too close, skip to next attempt
                 bValidLocation = false;
@@ -149,13 +145,11 @@ void AARGameModeBase::OnPowerupSpawnQueryCompleted(UEnvQueryInstanceBlueprintWra
             }
         }
 
-        // Failed the distance test
         if(!bValidLocation)
         {
             continue;
         }
 
-        // Pick a random powerup-class
         int32 RandomClassIndex = FMath::RandRange(0, PowerupClasses.Num() - 1);
         TSubclassOf<AActor> RandomPowerupClass = PowerupClasses[RandomClassIndex];
 

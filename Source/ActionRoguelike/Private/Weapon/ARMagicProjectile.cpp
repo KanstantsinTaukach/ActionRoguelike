@@ -6,6 +6,7 @@
 #include "Components/ARActionComponent.h"
 #include "Library/ARGameplayFunctionLibrary.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Actions/ARAction_Effect.h"
 
 AARMagicProjectile::AARMagicProjectile()
 {
@@ -41,6 +42,11 @@ void AARMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent
         if (UARGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, SweepResult))
         {
             Explode();
+
+            if (BurningActionClass && ActionComp)
+            {
+                ActionComp->AddAction(GetInstigator(), BurningActionClass);
+            }
         }
     }
 }

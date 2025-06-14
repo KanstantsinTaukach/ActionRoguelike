@@ -15,11 +15,11 @@ void UARActionComponent::BeginPlay()
 
     for (TSubclassOf<UARAction> ActionClass : DefaultActions)
     {
-        AddAction(ActionClass);
+        AddAction(GetOwner(), ActionClass);
     }
 }
 
-void UARActionComponent::AddAction(TSubclassOf<UARAction> ActionClass)
+void UARActionComponent::AddAction(AActor* Instigator, TSubclassOf<UARAction> ActionClass)
 {
     if (!ensure(ActionClass)) { return; }
 
@@ -27,7 +27,22 @@ void UARActionComponent::AddAction(TSubclassOf<UARAction> ActionClass)
     if (ensure(NewAction))
     {
         Actions.Add(NewAction);
+
+        if(NewAction->bAutoStart && ensure(NewAction->CanStart(Instigator)))
+        {
+            NewAction->StartAction(Instigator);
+        }
     }
+}
+
+void UARActionComponent::RemoveAction(UARAction* ActionToRemove) 
+{
+    if(!ensure(ActionToRemove && !ActionToRemove->GetIsRunning()))
+    {
+        return;
+    }
+
+    Actions.Remove(ActionToRemove);
 }
 
 bool UARActionComponent::StartActionByName(AActor *Instigator, FName ActionName)
