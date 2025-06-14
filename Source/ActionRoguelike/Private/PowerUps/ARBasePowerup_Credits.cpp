@@ -15,7 +15,7 @@ void AARBasePowerup_Credits::Interact_Implementation(APawn* InstigatorPawn)
         return;
     }
 
-    if(const auto PS = InstigatorPawn->GetPlayerState<AARPlayerState>())
+    if (AARPlayerState* PS = InstigatorPawn->GetPlayerState<AARPlayerState>())
     {
         PS->AddCredits(CreditsAmount);
         HideAndCooldownPowerup();

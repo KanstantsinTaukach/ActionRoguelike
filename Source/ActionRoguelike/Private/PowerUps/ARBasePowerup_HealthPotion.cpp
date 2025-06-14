@@ -6,7 +6,7 @@
 
 AARBasePowerup_HealthPotion::AARBasePowerup_HealthPotion()
 {
-    CreditCost = 50;
+    CreditsCost = 50;
 }
 
 void AARBasePowerup_HealthPotion::Interact_Implementation(APawn *InstigatorPawn)
@@ -19,7 +19,7 @@ void AARBasePowerup_HealthPotion::Interact_Implementation(APawn *InstigatorPawn)
     {
         if(const auto PS = InstigatorPawn->GetPlayerState<AARPlayerState>())
         {
-            if (PS->RemoveCredits(CreditCost) && AttributeComponent->ApplyHealthChange(this, AttributeComponent->GetMaxHealth()))
+            if (PS->RemoveCredits(CreditsCost) && AttributeComponent->ApplyHealthChange(this, AttributeComponent->GetMaxHealth()))
             {
                 HideAndCooldownPowerup();
             }

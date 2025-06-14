@@ -18,5 +18,5 @@ public:
 
 protected:
     UPROPERTY(EditAnywhere, Category = "HealthPotion")
-    int32 CreditCost;
+    int32 CreditsCost;
 };
