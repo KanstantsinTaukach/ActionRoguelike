@@ -14,18 +14,24 @@ class ACTIONROGUELIKE_API AARItemChest : public AActor, public IARGameplayInterf
 {
     GENERATED_BODY()
 
-  public:
+public:
     UPROPERTY(EditAnywhere)
     float TargetPitch;
 
-    void Interact_Implementation(APawn *InstigatorPawn);
+    void Interact_Implementation(APawn* InstigatorPawn);
 
     AARItemChest();
 
-  protected:
+protected:
+    UPROPERTY(ReplicatedUsing = "OnRep_LidOpened", BlueprintReadOnly) //RepNotify
+    bool bLidOpened;
+
+    UFUNCTION()
+    void OnRep_LidOpened();
+
     UPROPERTY(VisibleAnywhere)
-    UStaticMeshComponent *BaseMesh;
+    UStaticMeshComponent* BaseMesh;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-    UStaticMeshComponent *LidMesh;
+    UStaticMeshComponent* LidMesh;
 };
