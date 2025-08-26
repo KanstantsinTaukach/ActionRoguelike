@@ -40,4 +40,10 @@ protected:
     UARWorldUserWidget* DefaultWidgetInstance;
 
     void FindBestInteractable();
+
+    // Reliable - will always arrive, eventually. Request will be re-sent unless an acknowledgment was received.
+    // Unreliable - not guaranteed, packet can get lost and wont't retry.
+
+    UFUNCTION(Server, Reliable)
+    void ServerInteract(AActor* InFocus);
 };
