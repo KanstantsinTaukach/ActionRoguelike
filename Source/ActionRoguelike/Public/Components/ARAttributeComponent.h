@@ -24,11 +24,17 @@ public:
     static bool IsActorAlive(AActor* Actor);
 
 protected:
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Replicated, Category = "Attributes")
     float Health;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
-    float MaxHealth = 100.0f;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Replicated, Category = "Attributes")
+    float MaxHealth;
+
+    //UPROPERTY(ReplicatedUsing = "")
+    //bool bIsAlive;
+
+    UFUNCTION(NetMulticast, Reliable) // @FIXME: mark as unreliable once we moved the 'state' out of ARCharacter
+    void MulticastHealthChanged(AActor* InstigatorActor, float NewHealth, float Delta);
 
 public:
     UPROPERTY(BlueprintAssignable)

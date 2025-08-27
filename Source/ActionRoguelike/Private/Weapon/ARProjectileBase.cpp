@@ -1,6 +1,5 @@
 // ActionRoguelike game. Copyright Taukach K. All Rights Reserved.
 
-
 #include "Weapon/ARProjectileBase.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -12,9 +11,9 @@
 
 AARProjectileBase::AARProjectileBase()
 {
-	PrimaryActorTick.bCanEverTick = false;
+    PrimaryActorTick.bCanEverTick = false;
 
-	SphereComp = CreateDefaultSubobject<USphereComponent>("SphereComp");
+    SphereComp = CreateDefaultSubobject<USphereComponent>("SphereComp");
     SphereComp->SetCollisionProfileName("Projectile");
     SphereComp->OnComponentHit.AddDynamic(this, &AARProjectileBase::OnActorHit);
     RootComponent = SphereComp;
@@ -30,10 +29,15 @@ AARProjectileBase::AARProjectileBase()
     MovementComp->bRotationFollowsVelocity = true;
     MovementComp->bInitialVelocityInLocalSpace = true;
     MovementComp->ProjectileGravityScale = 0.0f;
+
+    ImpactShakeInnerRadius = 250.0f;
+    ImpactShakeOuterRadius = 1500.0f;
+
+    //SetReplicates(true);
 }
 
-void AARProjectileBase::OnActorHit(UPrimitiveComponent *HitComponent, AActor *OtherActor,
-                                   UPrimitiveComponent *OtherComp, FVector NormalImpulse, const FHitResult &Hit)
+void AARProjectileBase::OnActorHit(
+    UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
     Explode();
 }
@@ -57,7 +61,8 @@ void AARProjectileBase::Explode_Implementation()
 
         if (ImpactCameraShake)
         {
-            UGameplayStatics::PlayWorldCameraShake(this, ImpactCameraShake, GetActorLocation(), ImpactShakeInnerRadius, ImpactShakeOuterRadius);
+            UGameplayStatics::PlayWorldCameraShake(
+                this, ImpactCameraShake, GetActorLocation(), ImpactShakeInnerRadius, ImpactShakeOuterRadius);
         }
 
         Destroy();

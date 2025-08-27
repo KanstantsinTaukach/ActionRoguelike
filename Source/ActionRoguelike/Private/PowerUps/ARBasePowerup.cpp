@@ -15,6 +15,10 @@ AARBasePowerup::AARBasePowerup()
     MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("MeshComponent");
     MeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     MeshComponent->SetupAttachment(RootComponent);
+
+    RespawnTime = 10.0f;
+
+    SetReplicates(true);
 }
 
 void AARBasePowerup::BeginPlay()

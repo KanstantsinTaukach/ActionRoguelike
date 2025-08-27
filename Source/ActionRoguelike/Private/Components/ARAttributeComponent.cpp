@@ -2,6 +2,7 @@
 
 #include "Components/ARAttributeComponent.h"
 #include "../ARGameModeBase.h"
+#include "Net/UnrealNetwork.h"
 
 DEFINE_LOG_CATEGORY_STATIC(ARAttributeComponent, All, All);
 
@@ -11,10 +12,13 @@ UARAttributeComponent::UARAttributeComponent()
 {
     PrimaryComponentTick.bCanEverTick = false;
 
+    MaxHealth = 100.0f;
     Health = MaxHealth;
+
+    SetIsReplicatedByDefault(true);
 }
 
-bool UARAttributeComponent::ApplyHealthChange(AActor *InstigatorActor, float Delta)
+bool UARAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delta)
 {
     if (!GetOwner()->CanBeDamaged() && Delta < 0.0f)
     {
@@ -37,7 +41,11 @@ bool UARAttributeComponent::ApplyHealthChange(AActor *InstigatorActor, float Del
 
     float ActualDelta = Health - OldHealth;
 
-    OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
+    //OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
+    if (ActualDelta != 0.0f)
+    {
+        MulticastHealthChanged(InstigatorActor, Health, ActualDelta);
+    }
 
     if (ActualDelta < 0.0f && Health == 0.0f)
     {
@@ -76,4 +84,18 @@ bool UARAttributeComponent::IsActorAlive(AActor *Actor)
 bool UARAttributeComponent::Kill(AActor *InstigatorActor)
 {
     return ApplyHealthChange(InstigatorActor, -GetMaxHealth());
+}
+
+void UARAttributeComponent::MulticastHealthChanged_Implementation(AActor* InstigatorActor, float NewHealth, float Delta)
+{
+    OnHealthChanged.Broadcast(InstigatorActor, this, NewHealth, Delta);
+}
+
+void UARAttributeComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(UARAttributeComponent, Health);
+    DOREPLIFETIME(UARAttributeComponent, MaxHealth);
+    //DOREPLIFETIME_CONDITION(UARAttributeComponent, MaxHealth, COND_InitialOnly);
 }
