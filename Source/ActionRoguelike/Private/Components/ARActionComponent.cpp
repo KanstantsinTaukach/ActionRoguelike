@@ -7,6 +7,8 @@
 UARActionComponent::UARActionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+
+    SetIsReplicatedByDefault(true);
 }
 
 void UARActionComponent::BeginPlay()
@@ -59,6 +61,12 @@ bool UARActionComponent::StartActionByName(AActor *Instigator, FName ActionName)
                 continue;
             }
 
+            // Is client?
+            if (!GetOwner()->HasAuthority())
+            {
+                ServerStartAction(Instigator, ActionName);
+            }
+
             Action->StartAction(Instigator);
             return true;
         }
@@ -90,4 +98,9 @@ void UARActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
     FString DebugMsg = GetNameSafe(GetOwner()) + " : " + ActiveGameplayTags.ToStringSimple();
     GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Green, DebugMsg);
+}
+
+void UARActionComponent::ServerStartAction_Implementation(AActor* Instigator, FName ActionName) 
+{
+    StartActionByName(Instigator, ActionName);
 }

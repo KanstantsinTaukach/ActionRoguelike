@@ -33,7 +33,7 @@ AARProjectileBase::AARProjectileBase()
     ImpactShakeInnerRadius = 250.0f;
     ImpactShakeOuterRadius = 1500.0f;
 
-    //SetReplicates(true);
+    SetReplicates(true);
 }
 
 void AARProjectileBase::OnActorHit(
